@@ -1,48 +1,38 @@
 public class JavaApp {
 
-    private final int abstractVariableInteger = 1;
-    private final float abstractVariableFloat = 3.14f;
-    private final String abstractVariableString = "string";
-    private final boolean abstractVariableBoolean = false;
-
+    private static Person[] personArr = new Person[5];
 
     public static void main(String[] args) {
-        System.out.println(first(5, 7, 6, 2));
-        System.out.println(second(11, 10));
-        third(-1);
-        System.out.println(fourth(1));
-        fifth("Майк");
-        System.out.println(last(2004));
+        createPersonArr();
+        printPersArrInfo();
     }
+    private static void createPersonArr(){
+        Person tempPerson1 = new Person("Иван Иванов Иванович1", "Инжинер", "ivanIvanov1@gmail.com", "892312311", generateRandomSalary(), generateRandomAge());
+        Person tempPerson2 = new Person("Иван Иванов Иванович2", "Физик", "ivanIvanov2@gmail.com", "892312312", generateRandomSalary(), generateRandomAge());
+        Person tempPerson3 = new Person("Иван Иванов Иванович3", "Бухгалтер", "ivanIvanov3@gmail.com", "892312313", generateRandomSalary(), generateRandomAge());
+        Person tempPerson4 = new Person("Иван Иванов Иванович4", "Системный администратор", "ivanIvanov4@gmail.com", "892312314", generateRandomSalary(), generateRandomAge());
+        Person tempPerson5 = new Person("Иван Иванов Иванович5", "Директор", "ivanIvanov5@gmail.com", "892312315", generateRandomSalary(), generateRandomAge());
 
-    private static float first(float a, float b, float c, float d){
-        return a * (b + (c / d));
-    }
-    private static boolean second(int a, int b){
-        return (a + b) >= 10 && (a + b) <= 20;
-    }
-    private static void third(int a){
-        if(a<0){
-            System.out.println("отрицательное");
-        }else {
-            System.out.println("положительное");
-        }
-    }
-    private static boolean fourth(int a){
-        return a<0;
-    }
-    private static void fifth(String name){
-        System.out.printf("привет, %s.\n", name);
-    }
-    private static boolean last(int year){
-        if(year%4==0){
-            if(year%100==0){
-                return year % 400 == 0;
+        for(int i=0; i<personArr.length;i++){
+            switch (i) {
+                case 0 -> personArr[i] = tempPerson1;
+                case 1 -> personArr[i] = tempPerson2;
+                case 2 -> personArr[i] = tempPerson3;
+                case 3 -> personArr[i] = tempPerson4;
+                case 4 -> personArr[i] = tempPerson5;
             }
-            return true;
         }
-        return false;
     }
-
-
+    private static void printPersArrInfo(){
+        for(Person i : personArr) {
+            i.printInfo();
+            System.out.println();
+        }
+    }
+    private static int generateRandomAge(){
+        return (int)(Math.random()*60+21);
+    }
+    private static int generateRandomSalary(){
+        return (int)(Math.random()*70000+30000);
+    }
 }
