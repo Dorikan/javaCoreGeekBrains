@@ -1,48 +1,37 @@
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Locale;
+import java.util.Scanner;
+
 public class JavaApp {
-
-    private final int abstractVariableInteger = 1;
-    private final float abstractVariableFloat = 3.14f;
-    private final String abstractVariableString = "string";
-    private final boolean abstractVariableBoolean = false;
-
-
-    public static void main(String[] args) {
-        System.out.println(first(5, 7, 6, 2));
-        System.out.println(second(11, 10));
-        third(-1);
-        System.out.println(fourth(1));
-        fifth("Майк");
-        System.out.println(last(2004));
+    public static void main(String[] args) throws IOException {
+        System.out.println(createDirArr());
     }
 
-    private static float first(float a, float b, float c, float d){
-        return a * (b + (c / d));
-    }
-    private static boolean second(int a, int b){
-        return (a + b) >= 10 && (a + b) <= 20;
-    }
-    private static void third(int a){
-        if(a<0){
-            System.out.println("отрицательное");
-        }else {
-            System.out.println("положительное");
+    public static boolean createDirArr() throws IOException {
+        File dir;
+        Scanner scanner = new Scanner(System.in);
+        do{
+            System.out.println("введите путь к папке");
+            dir = new File(scanner.nextLine());
+        }while(!dir.exists());
+
+        File[] listFile = dir.listFiles();
+        assert listFile != null;
+        String[] listPaths = new String[listFile.length];
+
+        for(int i=0; i<listFile.length; i++){
+            if(listFile[i].getName().endsWith(".txt"))listPaths[i] = listFile[i].getPath();
         }
-    }
-    private static boolean fourth(int a){
-        return a<0;
-    }
-    private static void fifth(String name){
-        System.out.printf("привет, %s.\n", name);
-    }
-    private static boolean last(int year){
-        if(year%4==0){
-            if(year%100==0){
-                return year % 400 == 0;
+        StringBuilder s = new StringBuilder();
+        for (String path : listPaths) {
+            if (path != null) {
+                s.append(new String(Files.readAllBytes(Paths.get(path))));
+                s.append(" ");
             }
-            return true;
         }
-        return false;
+        System.out.println("введите слово для поиска");
+        return s.toString().toLowerCase(Locale.ROOT).contains(scanner.nextLine().toLowerCase(Locale.ROOT));
     }
-
-
 }
