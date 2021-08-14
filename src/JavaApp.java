@@ -1,37 +1,26 @@
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Locale;
-import java.util.Scanner;
+
 
 public class JavaApp {
-    public static void main(String[] args) throws IOException {
-        System.out.println(createDirArr());
+    public static void main(String[] args) throws MyArraySizeException, MyArrayDataException {
+
+        System.out.println(first(new String[4][4]));
     }
 
-    public static boolean createDirArr() throws IOException {
-        File dir;
-        Scanner scanner = new Scanner(System.in);
-        do{
-            System.out.println("введите путь к папке");
-            dir = new File(scanner.nextLine());
-        }while(!dir.exists());
+    private static int first(String[][] arr) throws MyArraySizeException, MyArrayDataException {
+        int temp=0;
 
-        File[] listFile = dir.listFiles();
-        assert listFile != null;
-        String[] listPaths = new String[listFile.length];
+        if (arr.length!=4)throw new MyArraySizeException("Длина массива должна быть равна 4.");
 
-        for(int i=0; i<listFile.length; i++){
-            if(listFile[i].getName().endsWith(".txt"))listPaths[i] = listFile[i].getPath();
-        }
-        StringBuilder s = new StringBuilder();
-        for (String path : listPaths) {
-            if (path != null) {
-                s.append(new String(Files.readAllBytes(Paths.get(path))));
-                s.append(" ");
+        for (int i=0;i<4;i++){
+            if (arr[i].length!=4)throw new MyArraySizeException("Длина массива должна быть равна 4.");
+            for (int z=0; z<4;z++){
+                try {
+                    temp+=Integer.parseInt(arr[i][z]);
+                }catch (NumberFormatException e){
+                    throw new MyArrayDataException("Невозможно сделать строку числом.\nошибка в ячейке "+(i+1)+"-"+(z+1));
+                }
             }
         }
-        System.out.println("введите слово для поиска");
-        return s.toString().toLowerCase(Locale.ROOT).contains(scanner.nextLine().toLowerCase(Locale.ROOT));
+        return temp;
     }
 }
