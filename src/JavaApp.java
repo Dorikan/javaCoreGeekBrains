@@ -1,37 +1,28 @@
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class JavaApp {
-    public static void main(String[] args) throws IOException {
-        System.out.println(createDirArr());
+    public static void main(String[] args){
+        first();
     }
 
-    public static boolean createDirArr() throws IOException {
-        File dir;
-        Scanner scanner = new Scanner(System.in);
-        do{
-            System.out.println("введите путь к папке");
-            dir = new File(scanner.nextLine());
-        }while(!dir.exists());
 
-        File[] listFile = dir.listFiles();
-        assert listFile != null;
-        String[] listPaths = new String[listFile.length];
+    public static void first(){
+        List<String> words = Arrays.asList(
+                "Mercedes", "BMW", "Audi", "Toyota", "Volkswagen",
+                "Opel", "Subaru", "Range Rover", "Toyota", "Volkswagen",
+                "BMW", "Audi", "Toyota", "Subaru", "Subaru",
+                "Audi", "Toyota", "Subaru", "Subaru", "Toyota"
+        );
 
-        for(int i=0; i<listFile.length; i++){
-            if(listFile[i].getName().endsWith(".txt"))listPaths[i] = listFile[i].getPath();
+        Set<String> unique = new HashSet<String>(words);
+        System.out.println("Уникальные слова");
+        for(String i : unique){
+            System.out.printf("%s ", i);
         }
-        StringBuilder s = new StringBuilder();
-        for (String path : listPaths) {
-            if (path != null) {
-                s.append(new String(Files.readAllBytes(Paths.get(path))));
-                s.append(" ");
-            }
+        System.out.println();
+        System.out.println("Частота встречаемости слов");
+        for (String key : unique) {
+            System.out.println(key + ": " + Collections.frequency(words, key));
         }
-        System.out.println("введите слово для поиска");
-        return s.toString().toLowerCase(Locale.ROOT).contains(scanner.nextLine().toLowerCase(Locale.ROOT));
     }
 }
